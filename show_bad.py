@@ -129,7 +129,8 @@ def detect_red_light(I):
 
 # set the path to the downloaded data: 
 data_path = '../data/RedLights2011_Medium'
-label_path = '../data/RedLights2011_Medium_labelled'
+#data_path = '../data/Labelled_reds'
+label_path = './bad_images'
 os.makedirs(label_path, exist_ok=True)  # create directory if needed
 
 # set a path for saving predictions: 
@@ -137,7 +138,13 @@ preds_path = '../data/hw01_preds'
 os.makedirs(preds_path, exist_ok=True)  # create directory if needed
 
 # get sorted list of files: 
-file_names = sorted(os.listdir(data_path)) 
+#file_names = sorted(os.listdir(data_path))
+file_names = ["RL-036.jpg",
+              "RL-037.jpg",
+              "RL-025.jpg",
+              "RL-022.jpg",
+              "RL-021.jpg",
+              "RL-016.jpg"]
 
 # remove any non-JPEG files: 
 file_names = [f for f in file_names if '.jpg' in f] 
@@ -152,11 +159,11 @@ for i in tqdm(range(len(file_names))):
     
     preds[file_names[i]] = detect_red_light(I)
     # Saving images with bounding boxes
-    #labelled_im = label_image(im, preds[file_names[i]])
-    #labelled_im.save(os.path.join(label_path, file_names[i]))
+    labelled_im = label_image(im, preds[file_names[i]])
+    labelled_im.save(os.path.join(label_path, file_names[i]))
 
 # save preds (overwrites any previous predictions!)
-with open(os.path.join(preds_path,'preds.json'),'w') as f:
+with open(os.path.join(preds_path,'bad_preds.json'),'w') as f:
     json.dump(preds,f)
-with open('preds.json','w') as f:
+with open('bad_preds.json','w') as f:
     json.dump(preds,f)
